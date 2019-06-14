@@ -12,6 +12,7 @@ class colors:
 # class powerup:
 #     def
 
+
 pontosdireita=0
 pontosesquerda=0
 #att = pontosesquerda
