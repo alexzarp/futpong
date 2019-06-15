@@ -1,6 +1,7 @@
 import pygame as pg
 import random as ram
 
+#paleta de cores utilizada durante o desenvolvimento
 class colors:
     white=(255,255,255)
     blue=(0,0,255)
@@ -9,18 +10,13 @@ class colors:
     orange=(200,100,0)
     black=(0,0,0)
 
-# class powerup:
-#     def
-
-
 pontosdireita=0
 pontosesquerda=0
-#att = pontosesquerda
-#att1 = pontosdireita
 
 g = True
 sair = True
 
+#exibe a mensagem de início de jogo
 def startgame():
     global sair
     g=True
@@ -37,6 +33,9 @@ def startgame():
             elif event.type == pg.QUIT:
                 sair = False
                 g=False
+
+#responsável por verificar se algum jogador atingiu
+# 5 pontos e assim encerrar o jogo, começando uma nova partida
 def endgame():
     global sair, pontosdireita, pontosesquerda
     g = True
@@ -78,10 +77,12 @@ def endgame():
         pontosdireita = 0
         pontosesquerda = 0
 
+
+#sempre é chamado quando placar estiver abaixo de 5
+#para exibir a mensagem de continuação
 def continua():
     global sair
     g=True
-
     text = font.render(("Pressione espaço para continuar"),1,cor.white)
     fundo.blit(text, (370,345))
     pg.display.update()
@@ -94,60 +95,64 @@ def continua():
                 g = False
                 sair = False
 
-
-
+#tamanho da janela em pixels
 largura=1280
 altura=720
 
-interancoes = 0
+#define as raquetes
+raqueteesquerda = pg.Rect(65,240,10,200)
+raquetedireita = pg.Rect(1200,240,10,200)
 
-altura_da_raquete = 200
-raqueteesquerda = pg.Rect(65,240,10,altura_da_raquete)
-raquetedireita = pg.Rect(1200,240,10,altura_da_raquete)
-#raqueteesquerda = pg.Rect(-25,240,100,altura_da_raquete)
-#raquetedireita = pg.Rect(1200,240,100,altura_da_raquete)
-
+#define a bola
 bola = pg.Rect(largura/2,altura/2,10,10)
 
+#define os limites superior e inferiro
 superior = pg.Rect(0,-10,1280,10)
 inferior = pg.Rect(0,720,1280,10)
 
+#define os contadores de ponto
 retangulocontesquerdo = pg.Rect(-190,0,200,720)
 retangulocontdireito = pg.Rect(1270,0,200,720)
-#retangulocontesquerdo = pg.Rect(0,0,10,720)
-#retangulocontdireito = pg.Rect(1270,0,10,720)
 
-
+#inicia o pygame
 pg.init()
-#pg.key.set_repeat(5)
 
+#define a fonte de texto utilizada
 pg.font.init()
 font1 = pg.font.get_default_font()
 font = pg.font.SysFont(font1, 50)
 
+#velocidade com que a raquete se move
 move = 10
 
+#configuração de FPS e controle de uso da CPU
 pg.mixer.quit()
 clock = pg.time.Clock()
 
+#velocida inicial X da bola
 velocidade_bola = 5
 
+#randomiza X e Y da bola no início do jogo
 y = ram.choice([-3,3])
 x = ram.choice([-velocidade_bola,velocidade_bola])
 
+#define a janela, nome do jogo
 fundo = pg.display.set_mode((largura,altura))
 pg.display.set_caption('FUT PONG')
+
+#chama a paleta de cores
 cor = colors()
 
+#exibe a mensagem de início do jogo
 startgame()
-# Loop principal
 
+# Loop principal do jogo
 while sair:
-
+    #fechamento da janela
     for event in pg.event.get():
         if event.type == pg.QUIT:
             sair = False
-
+    #teclas
     teclas_pressionadas = pg.key.get_pressed()
 
     if teclas_pressionadas[pg.K_UP]:
@@ -168,32 +173,24 @@ while sair:
 
 
 
-
+    #inversores de sinal +/- de X quando a bola bater na raquete
     if raquetedireita.colliderect(bola):
-        altura_da_raquete = altura_da_raquete-20
-
         x += (1 * (x / abs(x)))
-
         x = x * -1
         i = ram.choice([1,2])
-        #y = ram.choice([-6,6])
-        #y = 6
         if i==1:
             y = y * -1
 
     elif raqueteesquerda.colliderect(bola):
-        altura_da_raquete = altura_da_raquete-20
-
         x += (1 * (x / abs(x)))
-
         x = x * -1
-
         i = ram.choice([1,2])
-        #y = ram.choice([-6,6])
-        #y = 6
         if i==1:
             y = y * -1
 
+
+    #inversores de sinal +/- de Y quando a bola bater no
+    #limite superior ou inferior
     if superior.colliderect(bola):
         y = y * -1
 
@@ -201,42 +198,36 @@ while sair:
         y = y * -1
 
 
-
+    #contadores de pontos para quando a bola bater no final da janela,
+    #redefine a posição inicial das raquetes e da bola, além de permitir a
+    #continuação do jogo. Também define que quem marca o ponto, recomeça
+    #o jogo tendo de defender-se
     if retangulocontdireito.colliderect(bola):
         pontosesquerda+=1
-        print('Jogador esquerdo',pontosdireita)
         bola = pg.Rect(largura/2,altura/2,10,10)
         x = -abs(velocidade_bola)
-        altura_da_raquete = 200
-        raqueteesquerda = pg.Rect(65,240,10,altura_da_raquete)
-        raquetedireita = pg.Rect(1200,240,10,altura_da_raquete)
-        #raqueteesquerda = pg.Rect(-25,240,100,altura_da_raquete)
-        #raquetedireita = pg.Rect(1200,240,100,altura_da_raquete)
+        raqueteesquerda = pg.Rect(65,240,10,200)
+        raquetedireita = pg.Rect(1200,240,10,200)
         if pontosesquerda<5:
-
             continua()
-
-
 
     elif retangulocontesquerdo.colliderect(bola):
         pontosdireita+=1
-        print('Jogador direito',pontosesquerda)
         bola = pg.Rect(largura/2,altura/2,10,10)
         x = abs(velocidade_bola)
-        altura_da_raquete = 200
-        raqueteesquerda = pg.Rect(65,240,10,altura_da_raquete)
-        raquetedireita = pg.Rect(1200,240,10,altura_da_raquete)
-        #raqueteesquerda = pg.Rect(-25,240,100,altura_da_raquete)
-        #raquetedireita = pg.Rect(1200,240,100,altura_da_raquete)
+        raqueteesquerda = pg.Rect(65,240,10,200)
+        raquetedireita = pg.Rect(1200,240,10,200)
         if pontosdireita<5:
-
             continua()
 
-
+    #responsável por fazer a movimentação da bola X e Y
+    #pré definidos no início
     bola.move_ip(x,y)
+
+    #define o fundo da janela
     fundo.fill(cor.black)
 
-
+    #define o placar no topo da janela
     text = font.render((str(pontosesquerda)),1,cor.white)
     fundo.blit(text, (600, 10))
 
@@ -246,23 +237,28 @@ while sair:
     text = font.render(('x'),1,cor.white)
     fundo.blit(text, (630, 10))
 
+    #sempre é chamado para verificar o possível fim de jogo
     endgame()
 
-
-#plataformas
+    #define a propriedade reativa de impacto das raquetes
     pg.draw.rect(fundo,cor.white,raqueteesquerda)
     pg.draw.rect(fundo,cor.white,raquetedireita)
-#superior e inferior
+
+    #define a propriedade reativa de impacto dos limites superior
+    # e inferior
     pg.draw.rect(fundo,cor.white,superior)
     pg.draw.rect(fundo,cor.white,inferior)
 
-
-#contadores de pontos
+    #define a propriedade reativa de impacto dos contadores de ponto
     pg.draw.rect(fundo,cor.red,retangulocontdireito)
     pg.draw.rect(fundo,cor.red,retangulocontesquerdo)
-#bolinha
+
+    #define a propriedade reativa de impacto da bola
     pg.draw.rect(fundo,cor.white,bola)
 
+    #sempre que chamado, atualiza a informação exibida na tela
     pg.display.update()
+
+    #FPS
     clock.tick(120)
 pg.quit()
