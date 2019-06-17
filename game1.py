@@ -83,9 +83,20 @@ def endgame():
 def continua():
     global sair
     g=True
-    text = font.render(("Pressione espaço para continuar"),1,cor.white)
-    fundo.blit(text, (370,345))
-    pg.display.update()
+
+    if x<0:
+        text = font.render(("Jogador esquerdo marcou!"),1,cor.white)
+        fundo.blit(text, (425,310))
+        text = font.render(("Pressione espaço para continuar"),1,cor.white)
+        fundo.blit(text, (370,345))
+        pg.display.update()
+    elif x>0:
+        text = font.render(("Jogador direito marcou!"),1,cor.white)
+        fundo.blit(text, (430,310))
+        text = font.render(("Pressione espaço para continuar"),1,cor.white)
+        fundo.blit(text, (370,345))
+        pg.display.update()
+
     while g:
         for event in pg.event.get():
             if event.type == pg.KEYDOWN:
@@ -148,6 +159,7 @@ startgame()
 
 # Loop principal do jogo
 while sair:
+
     #fechamento da janela
     for event in pg.event.get():
         if event.type == pg.QUIT:
