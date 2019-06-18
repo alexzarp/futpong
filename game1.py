@@ -1,7 +1,8 @@
 import pygame as pg
 import random as ram
 
-#paleta de cores utilizada durante o desenvolvimento
+#paleta de cores utilizada durante o desenvolvimento,
+# não encontramos uma utilidade para classes nesse game
 class colors:
     white=(255,255,255)
     blue=(0,0,255)
@@ -14,11 +15,11 @@ pontosdireita=0
 pontosesquerda=0
 
 g = True
-sair = True
+principal = True
 
 #exibe a mensagem de início de jogo
 def startgame():
-    global sair
+    global principal
     g=True
     text = font.render(("Bem vindo ao Fut Pong"),1,cor.white)
     fundo.blit(text, (448, 370))
@@ -31,13 +32,13 @@ def startgame():
                 if event.key == pg.K_SPACE:
                     g = False
             elif event.type == pg.QUIT:
-                sair = False
+                principal = False
                 g=False
 
 #responsável por verificar se algum jogador atingiu
 # 5 pontos e assim encerrar o jogo, começando uma nova partida
 def endgame():
-    global sair, pontosdireita, pontosesquerda
+    global principal, pontosdireita, pontosesquerda
     g = True
     if pontosdireita==5 or pontosesquerda==5:
         if pontosdireita>pontosesquerda:
@@ -53,7 +54,7 @@ def endgame():
                             g = False
                     elif event.type == pg.QUIT:
                         g = False
-                        sair = False
+                        principal = False
             print('Jogador esquerdo venceu!')
 
 
@@ -71,7 +72,7 @@ def endgame():
 
                     elif event.type == pg.QUIT:
                         g = False
-                        sair = False
+                        principal = False
             print('Jogador direito venceu!')
 
         pontosdireita = 0
@@ -81,7 +82,7 @@ def endgame():
 #sempre é chamado quando placar estiver abaixo de 5
 #para exibir a mensagem de continuação
 def continua():
-    global sair
+    global principal
     g=True
 
     if x<0:
@@ -104,7 +105,7 @@ def continua():
                     g = False
             elif event.type == pg.QUIT:
                 g = False
-                sair = False
+                principal = False
 
 #tamanho da janela em pixels
 largura=1280
@@ -158,12 +159,12 @@ cor = colors()
 startgame()
 
 # Loop principal do jogo
-while sair:
+while principal:
 
     #fechamento da janela
     for event in pg.event.get():
         if event.type == pg.QUIT:
-            sair = False
+            principal = False
     #teclas
     teclas_pressionadas = pg.key.get_pressed()
 
