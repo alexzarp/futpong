@@ -11,9 +11,11 @@ class colors:
     orange=(200,100,0)
     black=(0,0,0)
 
+#variáveis que contam o placar
 pontosdireita=0
 pontosesquerda=0
 
+#algumas variáveis de controle de loop
 g = True
 principal = True
 
@@ -33,7 +35,7 @@ def startgame():
                     g = False
             elif event.type == pg.QUIT:
                 principal = False
-                g=False
+                g = False
 
 #responsável por verificar se algum jogador atingiu
 # 5 pontos e assim encerrar o jogo, começando uma nova partida
@@ -79,11 +81,11 @@ def endgame():
         pontosesquerda = 0
 
 
-#sempre é chamado quando placar estiver abaixo de 5
-#para exibir a mensagem de continuação
+#sempre é chamado quando o placar estiver abaixo de 5
+# para exibir a mensagem de continuação
 def continua():
     global principal
-    g=True
+    g = True
 
     if x<0:
         text = font.render(("Jogador esquerdo marcou!"),1,cor.white)
@@ -118,11 +120,11 @@ raquetedireita = pg.Rect(1200,240,10,200)
 #define a bola
 bola = pg.Rect(largura/2,altura/2,10,10)
 
-#define os limites superior e inferiro
+#define os limites superior e inferior
 superior = pg.Rect(0,-10,1280,10)
 inferior = pg.Rect(0,720,1280,10)
 
-#define os contadores de ponto
+#define os contadores de pontos
 retangulocontesquerdo = pg.Rect(-190,0,200,720)
 retangulocontdireito = pg.Rect(1270,0,200,720)
 
@@ -165,7 +167,8 @@ while principal:
     for event in pg.event.get():
         if event.type == pg.QUIT:
             principal = False
-    #teclas
+
+    #teclas que movem as raquetes
     teclas_pressionadas = pg.key.get_pressed()
 
     if teclas_pressionadas[pg.K_UP]:
@@ -186,7 +189,8 @@ while principal:
 
 
 
-    #inversores de sinal +/- de X quando a bola bater na raquete
+    #inversores de sinal +/- de X quando a bola bater na raquete,
+    #também incrementam a velocidade da bola
     if raquetedireita.colliderect(bola):
         x += (1 * (x / abs(x)))
         x = x * -1
@@ -274,4 +278,5 @@ while principal:
 
     #FPS
     clock.tick(120)
+
 pg.quit()
