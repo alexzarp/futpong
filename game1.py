@@ -118,7 +118,7 @@ raqueteesquerda = pg.Rect(65,240,10,200)
 raquetedireita = pg.Rect(1200,240,10,200)
 
 #define a bola
-bola = pg.Rect(largura/2,altura/2,10,10)
+bola = pg.Rect(largura/2,altura/2,15,15)
 
 #define os limites superior e inferior
 superior = pg.Rect(0,-10,1280,10)
@@ -221,7 +221,7 @@ while principal:
     #o jogo tendo de defender-se
     if retangulocontdireito.colliderect(bola):
         pontosesquerda+=1
-        bola = pg.Rect(largura/2,altura/2,10,10)
+        bola = pg.Rect(largura/2,altura/2,15,15)
         x = -abs(velocidade_bola)
         raqueteesquerda = pg.Rect(65,240,10,200)
         raquetedireita = pg.Rect(1200,240,10,200)
@@ -230,7 +230,7 @@ while principal:
 
     elif retangulocontesquerdo.colliderect(bola):
         pontosdireita+=1
-        bola = pg.Rect(largura/2,altura/2,10,10)
+        bola = pg.Rect(largura/2,altura/2,15,15)
         x = abs(velocidade_bola)
         raqueteesquerda = pg.Rect(65,240,10,200)
         raquetedireita = pg.Rect(1200,240,10,200)
@@ -257,7 +257,7 @@ while principal:
     #sempre é chamado para verificar o possível fim de jogo
     endgame()
 
-    #define a propriedade reativa de impacto das raquetes
+    #define a propriedade reativa de impacto das raquetes e as desenha na tela
     pg.draw.rect(fundo,cor.white,raqueteesquerda)
     pg.draw.rect(fundo,cor.white,raquetedireita)
 
@@ -266,17 +266,15 @@ while principal:
     pg.draw.rect(fundo,cor.white,superior)
     pg.draw.rect(fundo,cor.white,inferior)
 
-    #define a propriedade reativa de impacto dos contadores de ponto
+    #define a propriedade reativa de impacto dos contadores de pontos
     pg.draw.rect(fundo,cor.red,retangulocontdireito)
     pg.draw.rect(fundo,cor.red,retangulocontesquerdo)
 
-    #define a propriedade reativa de impacto da bola
-    pg.draw.rect(fundo,cor.white,bola)
+    #define a propriedade reativa de impacto da bola e a desenha na tela
+    pg.draw.ellipse(fundo,cor.white,bola)
 
     #sempre que chamado, atualiza a informação exibida na tela
     pg.display.update()
 
     #FPS
     clock.tick(120)
-
-pg.quit()
